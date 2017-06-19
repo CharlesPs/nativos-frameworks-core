@@ -2,7 +2,11 @@
 
 class MY_Model extends CI_Model {
 
+    private $_table = '';
+
     function __construct(){
         parent::__construct();
+
+        
     }
 }
