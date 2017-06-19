@@ -14,6 +14,9 @@ class MY_Model extends CI_Model {
     private $_ids_array = false;
     private $_field_array = false;
 
+    private $_pagination_limit = 20;
+    private $_pagination_offset = 0;
+
     function __construct(){
         parent::__construct();
 
@@ -118,7 +121,7 @@ class MY_Model extends CI_Model {
 		return $query->row();
     }
 
-    public function get_result () {
+    public function get_result ($clear_where = true) {
 
 		if($this->select_only_actives){
 			$this->db->where($this->_table . '.status', 'status_enabled');
@@ -142,6 +145,11 @@ class MY_Model extends CI_Model {
             $query_obj->where_in($this->_field_array[0], $this->_field_array[1]);
         }
 
+        if ($this->_pagination_offset) {
+
+            $query_obj->limit($this->_pagination_limit, $this->_pagination_offset);
+        }
+
         if (substr($this->_query_order, 0, 1) === "-") {
 
             $query_obj->order_by(substr($this->_query_order, 1), "DESC");
@@ -155,6 +163,24 @@ class MY_Model extends CI_Model {
         $this->reset_where();
 
         return $query->result();
+    }
+
+    public function get_pagination_result ($_pagination_offset = 0) {
+
+        $result_all = $this->get_result(false);
+
+        if ($_pagination_offset) {
+
+            $this->_pagination_offset = $_pagination_offset;
+        }
+
+        $pag_result = $this->get_result();
+
+        return array(
+            "actual_page" => $this->_pagination_offset,
+            "all_rows" => count($result_all),
+            "page_row" => $pag_result
+        );
     }
 
     public function save ($data_obj) {
