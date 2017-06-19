@@ -5,6 +5,7 @@
 ##### Instalación
 Nos situamos en el root de nuestro proyecto CodeIgniter y antes de instalar CodeIgniter en la consola escribimos:
 ```
+$> git init
 $> git submodule add https://github.com/CharlesPs/nativos-frameworks-core.git application/core
 ```
 Esto antes de instalar el CodeIgniter, sino tendremos un error.
