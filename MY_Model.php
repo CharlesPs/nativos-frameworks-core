@@ -10,7 +10,7 @@ class MY_Model extends CI_Model {
         parent::__construct();
     }
 
-    private function get_result () {
+    public function get_result () {
 
 		if($this->select_only_actives){
 			$this->db->where($this->_table . '.status', 'status_enabled');
